@@ -31,11 +31,21 @@ namespace Chapter_8___Long_Exercise_Go_Fish_
             cards.Add(cardToAdd);
         }
 
+        public Card Peek(int cardNumber)
+        {
+            return cards[cardNumber];
+        }
+
         public Card Deal(int index)
         {
             Card cardToDeal = cards[index];
             cards.RemoveAt(index);
             return cardToDeal;
+        }
+
+        public Card Deal()
+        {
+            return Deal(0);
         }
 
         public void Shuffle()
@@ -60,9 +70,39 @@ namespace Chapter_8___Long_Exercise_Go_Fish_
             return cardNames;
         }
 
-        public void Sort()
+        public void SortByValue()
         {
             cards.Sort(new SortCards());
+        }
+
+        public bool ContainsValue(Values value)
+        {
+            foreach (Card c in cards)
+                if (c.Value == value)
+                    return true;
+            return false;
+        }
+
+        public Deck PullOutValues(Values value)
+        {
+            Deck deckToReturn = new Deck(new Card[] { });
+
+            for (int i = cards.Count - 1; i >= 0; i--)
+                if (cards[i].Value == value)
+                    deckToReturn.Add(Deal(i));
+            return deckToReturn;
+        }
+
+        public bool HasBook(Values value)
+        {
+            int numberOfCards = 0;
+            foreach (Card c in cards)
+                if (c.Value == value)
+                    numberOfCards++;
+            if (numberOfCards == 4)
+                return true;
+            else
+                return false;
         }
     }
 }

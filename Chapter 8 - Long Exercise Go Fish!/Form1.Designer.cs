@@ -128,7 +128,7 @@
             this.btnCardAsk.TabIndex = 9;
             this.btnCardAsk.Text = "Ask for a card";
             this.btnCardAsk.UseVisualStyleBackColor = true;
-            this.btnCardAsk.Click += new System.EventHandler(this.button1_Click);
+            this.btnCardAsk.Click += new System.EventHandler(this.btnCardAsk_Click);
             // 
             // Form1
             // 

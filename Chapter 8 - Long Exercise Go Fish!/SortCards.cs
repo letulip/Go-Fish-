@@ -10,15 +10,14 @@ namespace Chapter_8___Long_Exercise_Go_Fish_
     {
         public int Compare(Card x, Card y)
         {
-            if (x.Suit > y.Suit)
-                return 1;
-            if (x.Suit < y.Suit)
-                return -1;
             if (x.Value > y.Value)
                 return 1;
             if (x.Value < y.Value)
                 return -1;
-            
+            if (x.Suit > y.Suit)
+                return 1;
+            if (x.Suit < y.Suit)
+                return -1;
             else
                 return 0;
         }
