@@ -121,6 +121,7 @@
             // 
             // btnCardAsk
             // 
+            this.btnCardAsk.Enabled = false;
             this.btnCardAsk.Location = new System.Drawing.Point(303, 474);
             this.btnCardAsk.Name = "btnCardAsk";
             this.btnCardAsk.Size = new System.Drawing.Size(181, 23);

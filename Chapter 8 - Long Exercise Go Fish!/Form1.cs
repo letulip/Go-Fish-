@@ -20,11 +20,19 @@ namespace Chapter_8___Long_Exercise_Go_Fish_
         private void btnStart_Click(object sender, EventArgs e)
         {
             btnStart.Enabled = false;
+            btnCardAsk.Enabled = true;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnCardAsk_Click(object sender, EventArgs e)
         {
 
         }
+
+        private void UpdateForm()
+        {
+
+        }
+
+        
     }
 }
