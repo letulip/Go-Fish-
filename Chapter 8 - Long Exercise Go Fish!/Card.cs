@@ -66,5 +66,13 @@ namespace Chapter_8___Long_Exercise_Go_Fish_
             else
                 return false;
         }
+
+        public static string Plural(Values value)
+        {
+            if (value == Values.Six)
+                return "Sixes";
+            else
+                return value.ToString() + "s";
+        }
     }
 }

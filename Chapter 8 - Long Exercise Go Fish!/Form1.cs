@@ -21,6 +21,12 @@ namespace Chapter_8___Long_Exercise_Go_Fish_
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(tbxYourName.Text))
+            {
+                MessageBox.Show("Please enter your name", "Can't start the game yet!");
+                return;
+            }
+
             game = new Game(tbxYourName.Text, new List<string> { "Joe", "Bob" }, tbxGameProgress);
             btnStart.Enabled = false;
             btnCardAsk.Enabled = true;

@@ -73,6 +73,7 @@
             this.lbxYourHand.Name = "lbxYourHand";
             this.lbxYourHand.Size = new System.Drawing.Size(181, 433);
             this.lbxYourHand.TabIndex = 3;
+            this.lbxYourHand.DoubleClick += new System.EventHandler(this.btnCardAsk_Click);
             // 
             // label2
             // 
