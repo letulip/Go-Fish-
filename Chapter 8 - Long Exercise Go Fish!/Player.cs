@@ -39,7 +39,8 @@ namespace Chapter_8___Long_Exercise_Go_Fish_
             this.name = name;
             this.rnd = rnd;
             this.textBoxOnForm = textBoxOnForm;
-            
+            this.cards = new Deck(new Card[] { });
+
             textBoxOnForm.Text += name + " has just joined the game" + Environment.NewLine;
         }
 
@@ -66,37 +67,53 @@ namespace Chapter_8___Long_Exercise_Go_Fish_
 
         public Values GetRandomValue()
         {
-            Values value = (Values)rnd.Next(0, 13);
-            return value;
+            Card randomCard = cards.Peek(rnd.Next(cards.Count));
+            return randomCard.Value;
         }
 
         public Deck DoYouHaveAny(Values value)
         {
-            Deck deckToPass = new Deck();
+            Deck deckToPass = cards.PullOutValues(value);
 
-            deckToPass.Add(cards.PullOutValues(value));
-
-            textBoxOnForm.Text += name + " has " + Card.Plural(value) + Environment.NewLine;
+            textBoxOnForm.Text += name + " has " + deckToPass.Count + " " + Card.Plural(value) + Environment.NewLine;
 
             return deckToPass;
         }
 
         public void AskForCard(List<Player> players, int myIndex, Deck stock)
         {
-            foreach (Player p in players)
-                p.GetRandomValue();
+            if(stock.Count > 0)
+            {
+                if (cards.Count == 0)
+                    cards.Add(stock.Deal());
+                Values rndValue = GetRandomValue();
+                AskForCard(players, myIndex, stock, rndValue);
+            }
         }
 
         public void AskForCard(List<Player> players, int myIndex, Deck stock, Values value)
         {
             textBoxOnForm.Text += name + " asks if anyone has a " + value + Environment.NewLine;
 
-            foreach (Player p in players)
+            int totalCardsGiven = 0;
+
+            for (int i = 0; i < players.Count; i++)
             {
-                p.DoYouHaveAny(value);
+                if ( i != myIndex)
+                {
+                    Player player = players[i];
+                    Deck cardsGiven = player.DoYouHaveAny(value);
+                    totalCardsGiven += cardsGiven.Count;
+                    while (cardsGiven.Count > 0)
+                        cards.Add(cardsGiven.Deal());
+                }
 
             }
-                
+            if(totalCardsGiven == 0 && stock.Count > 0)
+            {
+                textBoxOnForm.Text += name + " must draw from the stock." + Environment.NewLine;
+                cards.Add(stock.Deal());
+            }  
         }
     }
 }
