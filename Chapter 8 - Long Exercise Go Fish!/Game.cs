@@ -35,7 +35,7 @@ namespace Chapter_8___Long_Exercise_Go_Fish_
 
             for (int card = 0; card < 5; card++)
                 for (int player = 0; player < players.Count; player++)
-                    players[player].TakeCard(stock[stock.Count]);
+                    players[player].TakeCard(stock.Deal());
 
             foreach (Player p in players)
                 p.PullOutBooks();
@@ -43,16 +43,30 @@ namespace Chapter_8___Long_Exercise_Go_Fish_
 
         internal bool PlayOneRound(int selectedIndex)
         {
-            Card selectedCard = new Card((Suits)selectedIndex, (Values)selectedIndex);
+            Values selectedCard = players[0].Peek(selectedIndex).Value;
             for(int i = 0; i < players.Count; i++)
             {
-                players[i].AskForCard(players, i, stock, (Values)selectedIndex);
-                if(PullOutBooks(players[i]))
-                    players[i].TakeCard(selectedCard);
+                if (i == 0)
+                    players[0].AskForCard(players, 0, stock, selectedCard);
+                else
+                    players[i].AskForCard(players, i, stock);
+
+                if (PullOutBooks(players[i]))
+                {
+                    tbxGameProgress.Text += players[i].Name + " drew a new hand" + Environment.NewLine;
+
+                    int card = 1;
+
+                    while ( card <= 5 && stock.Count > 0)
+                    {
+                        players[i].TakeCard(stock.Deal());
+                        card++;
+                    }
+                }
             }
             players[0].SortHand();
 
-            if (stock == null)
+            if (stock.Count == 0)
             {
                 tbxGameProgress.Text += "The stock is out of cards. Game over!" + Environment.NewLine;
                 return true;
@@ -64,6 +78,11 @@ namespace Chapter_8___Long_Exercise_Go_Fish_
 
         public bool PullOutBooks(Player player)
         {
+            IEnumerable<Values> booksPulled = player.PullOutBooks();
+
+            foreach (Values v in booksPulled)
+                books.Add(v, player);
+
             if (player.CardCount == 0)
                 return true;
             else
@@ -74,19 +93,50 @@ namespace Chapter_8___Long_Exercise_Go_Fish_
         {
             Dictionary<string, int> winners = new Dictionary<string, int>();
 
-            foreach(Values value in books.Keys)
+            foreach(Values v in books.Keys)
             {
+                string name = books[v].Name;
 
+                if (winners.ContainsKey(name))
+                    winners[name]++;
+                else
+                    winners.Add(name, 1);
             }
-            
+
+            int mostBooks = 0;
+
+            foreach (string name in winners.Keys)
+                if (winners[name] > mostBooks)
+                    mostBooks = winners[name];
+
+            bool tie = false;
+            string winnerList = "";
+
+            foreach(string name in winners.Keys)
+                if(winners[name] == mostBooks)
+                {
+                    if (!string.IsNullOrEmpty(winnerList))
+                    {
+                        winnerList += " and ";
+                        tie = true;
+                    }
+
+                    winnerList += name;
+                }
+            winnerList += " with " + mostBooks + " books ";
+
+            if (tie)
+                return "A tie between " + winnerList;
+            else
+                return winnerList;
         }
 
         internal string DescribeBooks()
         {
             string booksDesc = "";
 
-            foreach (Player p in players)
-                booksDesc += p.Name + " has book of " + p.PullOutBooks() + Environment.NewLine;
+            foreach (Values v in books.Keys)
+                booksDesc += books[v].Name + " has a book of " + Card.Plural(v) + Environment.NewLine;
 
             return booksDesc;
         }

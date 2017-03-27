@@ -39,7 +39,7 @@ namespace Chapter_8___Long_Exercise_Go_Fish_
             this.name = name;
             this.rnd = rnd;
             this.textBoxOnForm = textBoxOnForm;
-
+            
             textBoxOnForm.Text += name + " has just joined the game" + Environment.NewLine;
         }
 
