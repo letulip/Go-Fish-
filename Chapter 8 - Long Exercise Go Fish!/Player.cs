@@ -89,7 +89,7 @@ namespace Chapter_8___Long_Exercise_Go_Fish_
 
         public void AskForCard(List<Player> players, int myIndex, Deck stock, Values value)
         {
-            textBoxOnForm.Text += name + " asks if anyone havs a " + value + Environment.NewLine;
+            textBoxOnForm.Text += name + " asks if anyone has a " + value + Environment.NewLine;
 
             foreach (Player p in players)
             {
